@@ -80,6 +80,14 @@ app.post('/create', async (req, res) => {
     res.redirect('/')
 })
 
+app.get('/user/login', (req, res) => {
+  res.render('login')
+})
+
+app.get('/user/register', (req, res) => {
+  res.render('register')
+})
+
 
 
 app.listen(port, () => {
