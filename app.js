@@ -1,6 +1,7 @@
 const express = require('express')
 const { engine } = require('express-handlebars') 
 const Record = require('./models/records')
+const Category = require('./models/category')
 const methodOverride = require('method-override')
 
 require('./config/mongoose')
@@ -20,6 +21,8 @@ app.use(methodOverride('_method'))
 app.get('/', (req, res) => {
   let totalAmount = 0
   Record.find()
+  //取得關聯資料庫項目
+   .populate('categoryId')
    .lean()
    .then(records => {
      records.forEach(item => {
@@ -58,10 +61,23 @@ app.get('/create', (req, res) => {
   res.render('create')
 })
 //送出新增內容
-app.post('/create', (req, res) => {
-  Record.create(req.body)
-  .then(() => res.redirect('/'))
-  .catch(error => console.log(error))
+// app.post('/create', (req, res) => {
+//   const body = req.body
+//   return Category
+//     .findOne({name: body.category})
+//     .then(category => {
+//     return Record.create({...body, categoryId: category._id})
+//   })
+//     .then(() => res.redirect('/'))
+//     .catch(error => console.log(error))
+// })
+
+//待
+app.post('/create', async (req, res) => {
+    const body = req.body
+    const categoryObj = await Category.findOne({ category: body.category }).lean()
+    await Record.create({ ...body, categoryId: categoryObj._id})
+    res.redirect('/')
 })
 
 
