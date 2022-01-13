@@ -6,7 +6,7 @@ const recordSchema = new Schema({
     required: true
   },
   date: {
-    type: String,
+    type: String,//用string型態寫入, 但在mongodb會是date型態
     Created: Date,
     required: true
   },
@@ -17,7 +17,14 @@ const recordSchema = new Schema({
   amount: {
     type: Number,
     required: true
-  }
+  },
+  //   categoryId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Category',
+  //   index: true,
+  //   required: true
+  // }
+  
 })
 
 module.exports = mongoose.model('Record', recordSchema)

@@ -18,9 +18,15 @@ app.use(methodOverride('_method'))
 
 //預覽全部項目
 app.get('/', (req, res) => {
+  let totalAmount = 0
   Record.find()
    .lean()
-   .then(records => res.render('index', {records}))
+   .then(records => {
+     records.forEach(item => {
+       totalAmount += item.amount
+     })
+     res.render('index', {records, totalAmount}
+   )})
    .catch(error => console.log(error))
 })
 
