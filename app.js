@@ -25,6 +25,12 @@ app.use(methodOverride('_method'))
 
 
 usePassport(app)
+app.use((req, res, next) => {
+  //會作用所有路由, 設定成本地變數
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 app.use(routes)
 
 
