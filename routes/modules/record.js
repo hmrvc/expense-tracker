@@ -6,23 +6,30 @@ const Category = require('../../models/category')
 
 //導向修改頁面
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({_id, userId})
     .lean()
     .then(record => res.render('edit', {record}))
     .catch(error => console.log(error))
 })
 //送出修改資訊路由
 router.put('/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Record.findByIdAndUpdate(id, req.body)
+  //加入目前使用者id
+  const userId = req.user._id
+  const _id = req.params.id
+  //找出更改後的category項目
+  const categoryObj = Category.findOne({ category: req.body.category}).lean()
+  //findOneAndUpdate 第一次參數為條件第二個為更新物件
+  return Record.findOneAndUpdate({_id, userId},{...req.body, categoryId: categoryObj._id})
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 //刪除項目
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({_id, userID})
    .then(record => record.remove())
    .then(() => res.redirect('/'))
    .catch(error => console.log(error))
@@ -32,23 +39,24 @@ router.get('/create', (req, res) => {
   res.render('create')
 })
 //送出新增內容
-// router.post('/create', (req, res) => {
-//   const body = req.body
-//   return Category
-//     .findOne({name: body.category})
-//     .then(category => {
-//     return Record.create({...body, categoryId: category._id})
-//   })
-//     .then(() => res.redirect('/'))
-//     .catch(error => console.log(error))
-// })
+router.post('/create', (req, res) => {
+  const userId = req.user._id
+  return Category.findOne({category: req.body.category})
+    .lean()
+    .then(categoryObj => {
+      return Record.create({userId, ...req.body, categoryId: categoryObj._id})
+      .then(() => res.redirect('/'))
+      .catch(error => console.log(error))
+    })
+})
 
 //待
-router.post('/create', async (req, res) => {
-    const body = req.body
-    const categoryObj = await Category.findOne({ category: body.category }).lean()
-    await Record.create({ ...body, categoryId: categoryObj._id})
-    res.redirect('/')
-})
+// router.post('/create', async (req, res) => {
+//     const userId = req.user._id
+//     const body = req.body
+//     const categoryObj = await Category.findOne({ category: body.category }).lean()
+//     await Record.create({ ...body, categoryId: categoryObj._id, userId})
+//     res.redirect('/')
+// })
 
 module.exports = router

@@ -5,11 +5,13 @@ const Category = require('../../models/category')
 
 //預覽全部項目
 router.get('/', (req, res) => {
+  const userId = req.user._id
   let totalAmount = 0
-  Record.find()
+  Record.find({ userId })
   //取得關聯資料庫項目
    .populate('categoryId')
    .lean()
+   .sort({ _id: 'asc'})
    .then(records => {
      records.forEach(item => {
        totalAmount += item.amount
