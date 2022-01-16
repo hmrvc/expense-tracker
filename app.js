@@ -17,7 +17,7 @@ const port = process.env.PORT
 app.engine('hbs', engine({defaultLayout: 'main', extname: 'hbs'}))
 app.set('view engine', 'hbs')
 app.use(session({
-  secret: process.env.SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
