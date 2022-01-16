@@ -19,17 +19,19 @@ router.put('/:id/edit', (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
   //找出更改後的category項目
-  const categoryObj = Category.findOne({ category: req.body.category}).lean()
+  return Category.findOne({ name: req.body.category})
+    .lean()
   //findOneAndUpdate 第一次參數為條件第二個為更新物件
-  return Record.findOneAndUpdate({_id, userId},{...req.body, categoryId: categoryObj._id})
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
+    .then(categoryObj => {
+      return Record.findOneAndUpdate({_id, userId},{...req.body, categoryId: categoryObj._id})
+      .then(() => res.redirect('/'))
+      .catch(error => console.log(error))
+})})
 //刪除項目
 router.delete('/:id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
-  return Record.findOne({_id, userID})
+  return Record.findOne({_id, userId})
    .then(record => record.remove())
    .then(() => res.redirect('/'))
    .catch(error => console.log(error))
@@ -41,7 +43,7 @@ router.get('/create', (req, res) => {
 //送出新增內容
 router.post('/create', (req, res) => {
   const userId = req.user._id
-  return Category.findOne({category: req.body.category})
+  return Category.findOne({name: req.body.category})
     .lean()
     .then(categoryObj => {
       return Record.create({userId, ...req.body, categoryId: categoryObj._id})
