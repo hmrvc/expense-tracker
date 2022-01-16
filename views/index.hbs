@@ -2,14 +2,18 @@
   <div class="row">
 {{!-- 用類別篩選顯示項目 --}}
     <div class="col-12 text-center">
-      <select name="category" class="form-select" aria-label="Default select example">
-        <option value="" disabled selected>請選擇項目類別</option>
-        <option value="交通出行">交通出行</option>
-        <option value="家居物業">家居物業</option>
-        <option value="休閒娛樂">休閒娛樂</option>
-        <option value="餐飲食品">餐飲食品</option>
-        <option value="其他">其他</option>
-      </select>
+      <form action="/search">
+        <select name="category" class="form-select" aria-label="Default select example" >
+          <option value="" disabled selected>請選擇項目類別</option>
+          <option value="交通出行">交通出行</option>
+          <option value="家居物業">家居物業</option>
+          <option value="休閒娛樂">休閒娛樂</option>
+          <option value="餐飲食品">餐飲食品</option>
+          <option value="其他">其他</option>
+        </select>
+        <button type="submit" class="btn btn-dark mt-3">以類別搜尋</button>
+      </form>
+
     </div>
   </div>
   <div class="row mt-3">
