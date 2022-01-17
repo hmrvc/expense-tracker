@@ -4,7 +4,7 @@
     <div class="col-12 text-center">
       <form action="/search">
         <select name="category" class="form-select" aria-label="Default select example" >
-          <option value="" disabled selected>請選擇項目類別</option>
+          <option value="" disabled selected>{{#if categorySet}}{{categorySet}}{{else}}請選擇項目類別{{/if}}</option>
           <option value="交通出行">交通出行</option>
           <option value="家居物業">家居物業</option>
           <option value="休閒娛樂">休閒娛樂</option>
@@ -12,6 +12,7 @@
           <option value="其他">其他</option>
         </select>
         <button type="submit" class="btn btn-dark mt-3">以類別搜尋</button>
+        <a type="button" class="btn btn-dark mt-3" href="/">顯示全部</a>
       </form>
 
     </div>

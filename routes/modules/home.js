@@ -30,13 +30,12 @@ router.get('/search', (req, res) => {
     .lean()
   //取得關聯資料庫項目
     .populate('categoryId')
-    .lean()
     .sort({ _id: 'asc'})
     .then(records => {
       records.forEach(item => {
         totalAmount += item.amount
       })
-      res.render('index', {records, totalAmount}
+      res.render('index', {records, totalAmount, categorySet}
     )})
     .catch(error => console.log(error))
 })

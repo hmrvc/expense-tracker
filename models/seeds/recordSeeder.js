@@ -34,8 +34,10 @@ db.once('open', async() => {
   }))
   .then(() => {
     console.log('user seed done')
-    process.exit()
-})
+    // process.exit()
+  })
+  .finally(() => process.exit())
+  .catch(error => console.log(error))
 
 
 
